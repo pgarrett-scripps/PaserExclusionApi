@@ -32,6 +32,7 @@ messages = [
                       max_intensity=1001)
 ]
 
+
 class TestExclusionList(unittest.TestCase):
 
     def setUp(self) -> None:

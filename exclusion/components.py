@@ -2,30 +2,29 @@ import logging
 import sys
 from dataclasses import dataclass, asdict
 
-from typing import Any
-
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
-#TODO: Remove defaults
+
 @dataclass(eq=True)
 class ExclusionInterval():
     """
-    Represents an excluded interval for RealTime APIO
+    Represents an interval in the excluded space.
 
-    id: can be any type, and does not have to be unique. Can be None to represent any id interval
-    charge: The charge of the excluded interval. 0 is interpreted as any charge.
-    min_mass
+    id: The Id of the interval. Does not have to be unique. If None: Represents all IDs.
+    charge: The charge of the excluded interval. If None: the Interval represents all charges
+    min_bounds: The lower 'inclusive' bound of the interval. If None: Will be set to sys.float_info.min
+    max_bounds: The upper 'exclusive' bound of the interval. If None: Will be set to sys.float_info.max
     """
-    id: str | None = 'PEPTIDE'
-    charge: int | None = 1
-    min_mass: float | None = 1000
-    max_mass: float | None = 1001
-    min_rt: float | None = 1000
-    max_rt: float | None = 1001
-    min_ook0: float | None = 1000
-    max_ook0: float | None = 1001
-    min_intensity: float | None = 1000
-    max_intensity: float | None = 1001
+    id: str | None
+    charge: int | None
+    min_mass: float | None
+    max_mass: float | None
+    min_rt: float | None
+    max_rt: float | None
+    min_ook0: float | None
+    max_ook0: float | None
+    min_intensity: float | None
+    max_intensity: float | None
 
     def __post_init__(self):
         """
@@ -89,10 +88,11 @@ class ExclusionInterval():
             return False
         return True
 
+
 @dataclass()
 class ExclusionPoint:
     """
-    Represents a point in the apio list. Values which are set to num will not be considered when verifying bounds
+    Represents a point in the excluded space. None values will be ignored.
     """
     charge: int | None
     mass: float | None

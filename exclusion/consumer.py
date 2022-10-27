@@ -1,6 +1,5 @@
 import traceback
-from dataclasses import dataclass, field, asdict
-from typing import Dict
+from dataclasses import dataclass, asdict
 
 from kafka import KafkaConsumer
 from schema_registry.client import SchemaRegistryClient

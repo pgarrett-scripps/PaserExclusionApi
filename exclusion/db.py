@@ -6,7 +6,7 @@ from typing import Dict, Any, List
 
 from intervaltree import IntervalTree, Interval
 
-from src.apio.exclusion.components import ExclusionInterval, ExclusionPoint
+from .components import ExclusionInterval, ExclusionPoint
 
 _log = logging.getLogger(__name__)
 _log.setLevel(logging.DEBUG)
