@@ -11,6 +11,7 @@ from .components import ExclusionInterval, ExclusionPoint
 _log = logging.getLogger(__name__)
 _log.setLevel(logging.DEBUG)
 
+
 @dataclass
 class ExclusionList(ABC):
 
@@ -88,8 +89,10 @@ class MassIntervalTree(ExclusionList):
         if mass_intervals is None:
             _log.warning(f'No exclusion intervals matching: {ex_interval}')
             return 0
-        for mass_interval in mass_intervals:
+        for mass_interval in set(mass_intervals):
             self.interval_tree.remove(mass_interval)
+
+        for mass_interval in mass_intervals:
             self.id_dict[mass_interval.data.id].remove(mass_interval)
 
         return len(mass_intervals)
@@ -149,7 +152,7 @@ class MassIntervalTree(ExclusionList):
         """
         with open(file_path, "rb") as file:
             self.interval_tree = pickle.load(file)
-
+            self.id_dict = {}
             for interval in self.interval_tree:
                 data = interval.data
                 self.id_dict.setdefault(data.id, []).append(interval)
@@ -165,4 +168,4 @@ class MassIntervalTree(ExclusionList):
         return len(self.interval_tree)
 
     def stats(self):
-        return {'len':len(self), 'class':str(type(self))}
+        return {'len':len(self), 'id_table_len': len(self.id_dict), 'class':str(type(self))}

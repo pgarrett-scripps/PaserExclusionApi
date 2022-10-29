@@ -88,6 +88,17 @@ class ExclusionInterval():
             return False
         return True
 
+    def is_valid(self):
+        if self.min_mass > self.max_mass:
+            return False
+        if self.min_rt > self.max_rt:
+            return False
+        if self.min_ook0 > self.max_ook0:
+            return False
+        if self.min_intensity > self.max_intensity:
+            return False
+        return True
+
 
 @dataclass()
 class ExclusionPoint:
