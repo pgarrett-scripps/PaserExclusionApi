@@ -46,7 +46,7 @@ class ExclusionListWorker(Thread):
 
     def run(self):
         """
-        Consumes psm_exclusion topic to add/remove intervals from the exclusion list
+        Consumes psm_exclusion topic to add/remove intervals from the exclusionms list
         """
         #logging.basicConfig(filename="log.txt", level=logging.DEBUG)
         #logging.debug("Debug logging test...")

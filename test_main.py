@@ -30,247 +30,247 @@ example_points = '?charge=1&mass=1000.5&rt=1000.5&ook0=1000.5&intensity=1000.5&c
 
 
 def test_post_exclusion():
-    response = client.delete("/exclusion")
+    response = client.delete("/exclusionms")
     assert response.status_code == 200
 
 
 def test_post_exclusion_save():
-    client.delete("/exclusion")
+    client.delete("/exclusionms")
 
-    response = client.post("/exclusion?save=True&exclusion_list_name=testing")
-    assert response.status_code == 204
+    response = client.post("/exclusionms?save=True&exclusion_list_name=testing")
+    assert response.status_code == 200
 
-    response = client.delete("/exclusion/file?exclusion_list_name=testing")
+    response = client.delete("/exclusionms/file?exclusion_list_name=testing")
     assert response.status_code == 200
 
 
 def test_post_exclusion_load():
-    client.delete("/exclusion")
+    client.delete("/exclusionms")
 
-    response = client.post("/exclusion?save=True&exclusion_list_name=testing")
-    assert response.status_code == 204
+    response = client.post("/exclusionms?save=True&exclusion_list_name=testing")
+    assert response.status_code == 200
 
-    response = client.post("/exclusion?save=False&exclusion_list_name=testing")
-    assert response.status_code == 204
+    response = client.post("/exclusionms?save=False&exclusion_list_name=testing")
+    assert response.status_code == 200
 
-    response = client.delete("/exclusion/file?exclusion_list_name=testing")
+    response = client.delete("/exclusionms/file?exclusion_list_name=testing")
     assert response.status_code == 200
 
 
 def test_post_exclusion_load_fail():
-    client.delete("/exclusion")
+    client.delete("/exclusionms")
 
-    response = client.post("/exclusion?save=False&exclusion_list_name=testing")
+    response = client.post("/exclusionms?save=False&exclusion_list_name=testing")
     assert response.status_code == 404
 
 
 def test_delete_exclusion_save_fail():
-    client.delete("/exclusion")
+    client.delete("/exclusionms")
 
-    response = client.delete("/exclusion/file?exclusion_list_name=testing")
+    response = client.delete("/exclusionms/file?exclusion_list_name=testing")
     assert response.status_code == 404
 
 
 def test_save_load():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")  # add interval
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")  # add interval
+    assert response.status_code == 200
 
-    response = client.post("/exclusion?save=True&exclusion_list_name=testing")  # save
-    assert response.status_code == 204
+    response = client.post("/exclusionms?save=True&exclusion_list_name=testing")  # save
+    assert response.status_code == 200
 
-    response = client.get(f"/exclusion/interval{example_interval}")  # get intervals
+    response = client.get(f"/exclusionms/interval{example_interval}")  # get intervals
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.post(f"/exclusion/interval{example_interval}")  # add interval
-    assert response.status_code == 204
+    response = client.post(f"/exclusionms/interval{example_interval}")  # add interval
+    assert response.status_code == 200
 
-    response = client.get(f"/exclusion/interval{example_interval}")  # get intervals
+    response = client.get(f"/exclusionms/interval{example_interval}")  # get intervals
     assert response.status_code == 200
     assert response.json() == [example_interval_dict, example_interval_dict]
 
-    response = client.post("/exclusion?save=False&exclusion_list_name=testing")  # load
-    assert response.status_code == 204
+    response = client.post("/exclusionms?save=False&exclusion_list_name=testing")  # load
+    assert response.status_code == 200
 
-    response = client.get(f"/exclusion/interval{example_interval}")  # get intervals (should only be 1)
+    response = client.get(f"/exclusionms/interval{example_interval}")  # get intervals (should only be 1)
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
 
 def test_post_exclusion_interval():
-    client.delete("/exclusion")
+    client.delete("/exclusionms")
 
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.post(f"/exclusion/interval{example_oob_interval}")
+    response = client.post(f"/exclusionms/interval{example_oob_interval}")
     assert response.status_code == 400
 
 
 def test_get_exclusion_interval():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.get(f"/exclusion/interval{example_interval}")
+    response = client.get(f"/exclusionms/interval{example_interval}")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
 
 def test_get_exclusion_interval_by_id():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.get(f"/exclusion/interval?interval_id=PEPTIDE")
+    response = client.get(f"/exclusionms/interval?interval_id=PEPTIDE")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/interval?interval_id=PEPTIDE2")
+    response = client.get(f"/exclusionms/interval?interval_id=PEPTIDE2")
     assert response.status_code == 404
 
 
 def test_get_exclusion_interval_by_mass():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.get(f"/exclusion/interval?min_mass=1000&max_mass=1001")
+    response = client.get(f"/exclusionms/interval?min_mass=1000&max_mass=1001")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/interval?max_mass=1001")
+    response = client.get(f"/exclusionms/interval?max_mass=1001")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/interval?min_mass=1000")
+    response = client.get(f"/exclusionms/interval?min_mass=1000")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/interval?min_mass=1001&max_mass=1000")
+    response = client.get(f"/exclusionms/interval?min_mass=1001&max_mass=1000")
     assert response.status_code == 400
 
-    response = client.get(f"/exclusion/interval?min_mass=1001")
+    response = client.get(f"/exclusionms/interval?min_mass=1001")
     assert response.status_code == 404
 
-    response = client.get(f"/exclusion/interval?max_mass=1000")
+    response = client.get(f"/exclusionms/interval?max_mass=1000")
     assert response.status_code == 404
 
 
 def test_delete_exclusion_interval():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.delete(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    response = client.delete(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
     # Test if interval was deleted, plus add the interval back in
-    response = client.get(f"/exclusion/interval{example_interval}")
+    response = client.get(f"/exclusionms/interval{example_interval}")
     assert response.status_code == 404
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
-    response = client.get(f"/exclusion/interval{example_interval}")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
+    response = client.get(f"/exclusionms/interval{example_interval}")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.delete(f"/exclusion/interval{example_oob_interval}")
+    response = client.delete(f"/exclusionms/interval{example_oob_interval}")
     assert response.status_code == 400
 
 
 def test_get_multiple_exclusion_interval():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.get(f"/exclusion/interval{example_interval}")
+    response = client.get(f"/exclusionms/interval{example_interval}")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict, example_interval_dict]
 
 
 def test_delete_multiple_exclusion_interval():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.delete(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    response = client.delete(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.get(f"/exclusion/interval{example_interval}")
+    response = client.get(f"/exclusionms/interval{example_interval}")
     assert response.status_code == 404
 
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
 
 def test_get_point():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.get(f"/exclusion/point{example_point}")
+    response = client.get(f"/exclusionms/point{example_point}")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/point")
+    response = client.get(f"/exclusionms/point")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/point?charge=1")
+    response = client.get(f"/exclusionms/point?charge=1")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/point?mass=1000")
+    response = client.get(f"/exclusionms/point?mass=1000")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/point?mass=1001")
+    response = client.get(f"/exclusionms/point?mass=1001")
     assert response.status_code == 404
 
-    response = client.get(f"/exclusion/point?rt=1000")
+    response = client.get(f"/exclusionms/point?rt=1000")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/point?rt=1001")
+    response = client.get(f"/exclusionms/point?rt=1001")
     assert response.status_code == 404
 
-    response = client.get(f"/exclusion/point?ook0=1000")
+    response = client.get(f"/exclusionms/point?ook0=1000")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/point?ook0=1001")
+    response = client.get(f"/exclusionms/point?ook0=1001")
     assert response.status_code == 404
 
-    response = client.get(f"/exclusion/point?intensity=1000")
+    response = client.get(f"/exclusionms/point?intensity=1000")
     assert response.status_code == 200
     assert response.json() == [example_interval_dict]
 
-    response = client.get(f"/exclusion/point?intensity=1001")
+    response = client.get(f"/exclusionms/point?intensity=1001")
     assert response.status_code == 404
 
 
 def test_get_points():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
-    response = client.get(f"/exclusion/points{example_points}")
+    response = client.get(f"/exclusionms/points{example_points}")
     assert response.status_code == 200
     assert response.json() == [True, True]
 
 
 def test_add_interval_performance():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
     start_time = time.time()
     for i in range(100):
-        client.post(f"/exclusion/interval{example_interval}")
+        client.post(f"/exclusionms/interval{example_interval}")
 
     total_time = time.time() - start_time
     print(f'Interval Add time: {total_time}')
@@ -278,13 +278,13 @@ def test_add_interval_performance():
 
 
 def test_get_interval_performance():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
     start_time = time.time()
     for i in range(100):
-        client.get(f"/exclusion/interval{example_interval}")
+        client.get(f"/exclusionms/interval{example_interval}")
 
     total_time = time.time() - start_time
     print(f'Interval Get time: {total_time}')
@@ -292,13 +292,13 @@ def test_get_interval_performance():
 
 
 def test_head_interval_performance():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
     start_time = time.time()
     for i in range(100):
-        client.head(f"/exclusion/interval{example_interval}")
+        client.head(f"/exclusionms/interval{example_interval}")
 
     total_time = time.time() - start_time
     print(f'Interval Head time: {total_time}')
@@ -306,13 +306,13 @@ def test_head_interval_performance():
 
 
 def test_get_point_performance():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
     start_time = time.time()
     for i in range(100):
-        client.get(f"/exclusion/point{example_point}")
+        client.get(f"/exclusionms/point{example_point}")
 
     total_time = time.time() - start_time
     print(f'Point Get time: {total_time}')
@@ -320,13 +320,13 @@ def test_get_point_performance():
 
 
 def test_head_point_performance():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
     start_time = time.time()
     for i in range(100):
-        client.head(f"/exclusion/point{example_point}")
+        client.head(f"/exclusionms/point{example_point}")
 
     total_time = time.time() - start_time
     print(f'Point Head time: {total_time}')
@@ -334,9 +334,9 @@ def test_head_point_performance():
 
 
 def test_get_points_performance():
-    client.delete("/exclusion")
-    response = client.post(f"/exclusion/interval{example_interval}")
-    assert response.status_code == 204
+    client.delete("/exclusionms")
+    response = client.post(f"/exclusionms/interval{example_interval}")
+    assert response.status_code == 200
 
     sub_str = '&charge=1&mass=1000.5&rt=1000.5&ook0=1000.5&intensity=1000.5'
 
@@ -345,7 +345,7 @@ def test_get_points_performance():
     points_query = ''.join(sub_strs)
 
     start_time = time.time()
-    client.get(f"/exclusion/points{points_query}")
+    client.get(f"/exclusionms/points{points_query}")
 
     total_time = time.time() - start_time
     print(f'Point Heads time: {total_time}')

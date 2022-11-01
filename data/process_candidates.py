@@ -70,7 +70,7 @@ def process_candidates(self, candidates, make_candidate, enable_individual_colli
         exclusion_points_query = charges + masses + rts + ook0s + ints
         exclusion_points_query = '?' + exclusion_points_query[1:]
 
-        response = requests.get(f'http://{paser_exclusion_api_ip}/exclusion/points{exclusion_points_query}')
+        response = requests.get(f'http://{paser_exclusion_api_ip}/exclusionlist/points{exclusion_points_query}')
         data = response.text
         exclusion_flags = json.loads(data)
 

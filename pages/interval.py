@@ -30,17 +30,17 @@ response = None
 interval_query = None
 if c1.button('Add'):
     query = make_interval_query(interval_id, charge, min_mass, max_mass, min_rt, max_rt, min_ook0, max_ook0, min_intensity, max_intensity)
-    interval_query = f'{EXCLUSION_API_IP}/exclusion/interval{query}'
+    interval_query = f'{EXCLUSION_API_IP}/exclusionlist/interval{query}'
     response = requests.post(interval_query)
 
 if c2.button('Remove'):
     query = make_interval_query(interval_id, charge, min_mass, max_mass, min_rt, max_rt, min_ook0, max_ook0, min_intensity, max_intensity)
-    interval_query = f'{EXCLUSION_API_IP}/exclusion/interval{query}'
+    interval_query = f'{EXCLUSION_API_IP}/exclusionlist/interval{query}'
     response = requests.delete(interval_query)
 
 if c3.button('Query'):
     query = make_interval_query(interval_id, charge, min_mass, max_mass, min_rt, max_rt, min_ook0, max_ook0, min_intensity, max_intensity)
-    interval_query = f'{EXCLUSION_API_IP}/exclusion/interval{query}'
+    interval_query = f'{EXCLUSION_API_IP}/exclusionlist/interval{query}'
     response = requests.get(interval_query)
 
 if response:

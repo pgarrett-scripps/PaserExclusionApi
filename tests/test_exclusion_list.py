@@ -4,8 +4,8 @@ import unittest
 import pickle
 from copy import copy, deepcopy
 
-from exclusion.components import ExclusionInterval, ExclusionPoint
-from exclusion.db import MassIntervalTree as ExclusionList
+from exclusionms.components import ExclusionInterval, ExclusionPoint
+from exclusionms.db import MassIntervalTree as ExclusionList
 
 
 

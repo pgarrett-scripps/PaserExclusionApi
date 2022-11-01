@@ -1,4 +1,4 @@
 # Upload a fasta
 # digest fasta
 # predict rt/ook0 for peptides
-# add to exclusion list
+# add to exclusionms list
